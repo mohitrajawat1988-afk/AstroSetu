@@ -1,0 +1,31 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'   # FIXED VERSION
+
+      - name: Create Flutter App
+        run: flutter create astrosetu
+
+      - name: Build Debug APK
+        run: |
+          cd astrosetu
+          flutter build apk --debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AstroSetu-App
+          path: astrosetu/build/app/outputs/flutter-apk/app-debug.apk
